@@ -24,6 +24,7 @@ jobs:
       with:
         local-dir: ./dist/frontend-volley/
         server-dir: /httpdocs/helfereinsatztool/
+        protocol: ftps
         server: ${{ secrets.SERVER }}
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
