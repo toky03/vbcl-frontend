@@ -24,6 +24,6 @@ jobs:
       with:
         local-dir: ./dist/frontend-volley/
         server-dir: /httpdocs/helfereinsatztool
-        server: ${{ secrets.server }}
-        username: ${{ secrets.username }}
-        password: ${{ secrets.password }}
+        server: ${{ secrets.SERVER }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
