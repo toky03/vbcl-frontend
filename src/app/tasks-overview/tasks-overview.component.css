@@ -1,0 +1,17 @@
+.sortable:hover {
+  cursor: pointer;
+}
+
+.bi {
+    font-size: 15px;
+}
+
+table {
+  height: 80%;
+  overflow: auto;
+}
+
+thead th {
+  top: 0;
+  position: sticky;
+}

@@ -1,27 +1,19 @@
-# FrontendVolley
+# Helfereinsatz Tool VBC Lyss
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.4.
+Frontend Code fuer Helfereinsatz Tool
 
-## Development server
+Benoetigte Tools für das Lokale Setup
+- npm Verion 8
+- angular cli Version 14
+- Optional Docker
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Lokaler Development Server starten: `ng serve`.
+Der Frontend ist danach auf http://localhost:4200 erreichbar.
 
-## Code scaffolding
+# Projekt bauen
+## Docker Image
+Command: `docker build -t <image-name> .`
+Im [Dockerfile](./Dockerfile) wird in zwei Schritten das Docker Image erstellt. Der erste Schritt erstellt ein Bundle an statischen Dateien. Im zweiten Schritt werden die statischen Dateien in einen Nginx Server gepackt um so ein möglichst schlankes Image ohne Node oder npm Artefakte zu erhalten.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Native Build
+Mit `ng build` werden ein Bundle mit allen statischen Dateien im Ordner dist/frontend-volley erstellt.

@@ -1,0 +1,53 @@
+<div class="mt-3 card" *ngIf="taksForm">
+  <form [formGroup]="taksForm">
+    <div class="container p-4 d-flex justify-content-between">
+      <div class="p-2 input-group">
+        <input
+          class="form-control"
+          placeholder="dd.mm.yyyy"
+          name="dp"
+          formControlName="datum"
+          ngbDatepicker
+          #d="ngbDatepicker"
+        />
+        <button
+          class="btn btn-outline-secondary calendar"
+          (click)="d.toggle()"
+          type="button"
+        ></button>
+      </div>
+      <div class="p-2 input-group">
+        <input
+          class="p-2 form-control"
+          type="text"
+          formControlName="beschreibung"
+          placeholder="Beschreibung"
+          required
+        />
+      </div>
+      <div class="input-group p-2">
+        <input
+          class="form-control"
+          type="text"
+          formControlName="dauer"
+          placeholder="Dauer"
+        />
+      </div>
+    </div>
+    <button
+      *ngIf="taskForEdit"
+      class="m-2 float-right btn btn-warning"
+      (click)="cancel()"
+    >
+      Abbrechen
+    </button>
+    <button
+      type="submit"
+      class="m-2 float-right btn btn-success"
+      [disabled]="!taksForm.valid"
+      (click)="save()"
+    >
+      {{ taskForEdit ? "Speichern" : "Aufgabe erfassen" }}
+    </button>
+  </form>
+</div>

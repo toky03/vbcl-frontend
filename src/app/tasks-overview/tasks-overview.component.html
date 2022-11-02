@@ -1,0 +1,108 @@
+<div class="table-responsive">
+  <table class="table table-sm table-striped">
+    <thead class="header" *ngIf="readOptions$ | async as readOptions">
+      <tr>
+        <th
+          class="sortable"
+          scope="col"
+          (click)="updateOptions('datum', readOptions)"
+        >
+          <small>Datum</small>
+          <i
+            *ngIf="readOptions.sortColumn === 'datum'"
+            [ngClass]="calculateArrow(readOptions.sorting)"
+          ></i>
+        </th>
+        <th
+          class="sortable"
+          scope="col"
+          (click)="updateOptions('dauer', readOptions)"
+        >
+          <small>Dauer</small>
+          <i
+            *ngIf="readOptions.sortColumn === 'dauer'"
+            [ngClass]="calculateArrow(readOptions.sorting)"
+          ></i>
+        </th>
+        <th
+          class="sortable"
+          scope="col"
+          (click)="updateOptions('beschreibung', readOptions)"
+        >
+          <small>Beschreibung</small>
+          <i
+            *ngIf="readOptions.sortColumn === 'beschreibung'"
+            [ngClass]="calculateArrow(readOptions.sorting)"
+          ></i>
+        </th>
+        <th scope="col"><small>Reservierung</small></th>
+        <th *ngIf="confirmAllowed" scope="col"><small>Bestätigen</small></th>
+        <th *ngIf="confirmAllowed" scope="col"><small>Aktionen</small></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasks$ | async; index as i">
+        <td>
+          <small>{{ task.datum | vbcDate }}</small>
+        </td>
+        <td>
+          <small>{{ task.dauer }}</small>
+        </td>
+        <td>
+          <small>{{ task.beschreibung }}</small>
+        </td>
+        <td>
+          <button
+            *ngIf="!task.reservation?.id; else reservierung"
+            class="btn btn-secondary btn-sm"
+            (click)="reservieren(task.id)"
+          >
+            <small>Reservieren</small>
+          </button>
+          <ng-template #reservierung>
+            <p>{{ task.reservation?.name }}</p>
+            <button
+              *ngIf="task.reservation?.id === userName && !task.bestaetigt"
+              class="btn btn-warning"
+              (click)="entferneReservation(task.id)"
+            >
+              <small>Reservation entfernen</small>
+            </button>
+          </ng-template>
+        </td>
+        <td *ngIf="confirmAllowed">
+          <button
+            *ngIf="!task.bestaetigt && task.reservation?.id"
+            class="btn btn-warning btn-sm"
+            (click)="bestaetigen(task.id)"
+          >
+            <i class="bi bi-check"></i>
+          </button>
+          <button
+            *ngIf="task.bestaetigt"
+            class="btn btn-success btn-sm"
+            (click)="entferneBestaetigung(task.id)"
+          >
+            <i class="bi bi-arrow-counterclockwise"></i>
+          </button>
+        </td>
+        <td *ngIf="confirmAllowed">
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="edit(task)"
+          >
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger btn-sm"
+            (click)="delete(task.id)"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
