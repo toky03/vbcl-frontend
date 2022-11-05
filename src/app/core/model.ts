@@ -3,6 +3,7 @@ export interface AmtPosten {
   id: string;
   datum: string;
   dauer: string;
+  startZeit: string;
   beschreibung: string;
   reservation?: User;
 }

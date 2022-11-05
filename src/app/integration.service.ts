@@ -9,8 +9,9 @@ import {
   tap,
 } from 'rxjs';
 import { AmtPosten, ReadOptions } from './core/model';
+import { environment } from 'src/environments/environment';
 
-const BASE_URL = 'https://volley.bubelu.ch/api';
+const BASE_URL = environment.baseUrl;
 
 @Injectable({
   providedIn: 'root',

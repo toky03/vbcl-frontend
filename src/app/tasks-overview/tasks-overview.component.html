@@ -43,7 +43,7 @@
     <tbody>
       <tr *ngFor="let task of tasks$ | async; index as i">
         <td>
-          <small>{{ task.datum | vbcDate }}</small>
+          <small>{{ task.datum | vbcDate }} {{ task.startZeit }}</small>
         </td>
         <td>
           <small>{{ task.dauer }}</small>

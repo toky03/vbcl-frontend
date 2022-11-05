@@ -34,6 +34,16 @@
         />
       </div>
     </div>
+    <div class="container d-flex justify-content-center">
+      <div class="input-group justify-content-center">
+        <div class="small form-text">Start Zeit</div>
+        <ngb-timepicker
+          size="small"
+          placeholder="HH:mm"
+          formControlName="startZeit"
+        ></ngb-timepicker>
+      </div>
+    </div>
     <button
       *ngIf="taskForEdit"
       class="m-2 float-right btn btn-warning"

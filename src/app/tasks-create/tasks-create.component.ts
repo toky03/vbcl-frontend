@@ -11,11 +11,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   NgbDateAdapter,
   NgbDateParserFormatter,
+  NgbTimeAdapter,
 } from '@ng-bootstrap/ng-bootstrap';
 import { parseISO } from 'date-fns';
 import { VbcAdapterService } from '../core/dateparser/vbc-adapter.service';
 import { VbcCustomDateParserService } from '../core/dateparser/vbc-custom-date-parser.service';
 import { AmtPosten } from '../core/model';
+import { VbcTimeAdapterService } from '../core/timeparser/vbc-time-adapter.service';
 import { IntegrationService } from '../integration.service';
 import { ensureFmt } from '../utils/date-utils';
 
@@ -26,6 +28,7 @@ import { ensureFmt } from '../utils/date-utils';
   providers: [
     { provide: NgbDateAdapter, useClass: VbcAdapterService },
     { provide: NgbDateParserFormatter, useClass: VbcCustomDateParserService },
+    { provide: NgbTimeAdapter, useClass: VbcTimeAdapterService}
   ],
 })
 export class TasksCreateComponent implements OnInit, OnChanges {
@@ -44,6 +47,7 @@ export class TasksCreateComponent implements OnInit, OnChanges {
       datum: ['', Validators.required],
       beschreibung: ['', Validators.required],
       dauer: [''],
+      startZeit: ['']
     });
   }
 
@@ -53,6 +57,7 @@ export class TasksCreateComponent implements OnInit, OnChanges {
         datum: this.taskForEdit.datum,
         beschreibung: this.taskForEdit.beschreibung,
         dauer: this.taskForEdit.dauer,
+        startZeit: this.taskForEdit.startZeit,
       });
     }
   }
@@ -89,7 +94,6 @@ function mergeForm(task: any): AmtPosten {
     datum: task.datum,
     beschreibung: task.beschreibung,
     dauer: task.dauer,
+    startZeit: task.startZeit,
   };
 }
-
-
