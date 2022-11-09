@@ -28,7 +28,7 @@ import { ensureFmt } from '../utils/date-utils';
   providers: [
     { provide: NgbDateAdapter, useClass: VbcAdapterService },
     { provide: NgbDateParserFormatter, useClass: VbcCustomDateParserService },
-    { provide: NgbTimeAdapter, useClass: VbcTimeAdapterService}
+    { provide: NgbTimeAdapter, useClass: VbcTimeAdapterService },
   ],
 })
 export class TasksCreateComponent implements OnInit, OnChanges {
@@ -46,18 +46,21 @@ export class TasksCreateComponent implements OnInit, OnChanges {
     this.taksForm = this.formBuilder.group({
       datum: ['', Validators.required],
       beschreibung: ['', Validators.required],
-      dauer: [''],
-      startZeit: ['']
+      dauer: [0],
+      startZeit: ['', Validators.required],
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.taskForEdit && this.taksForm) {
+      const splittedDate = this.taskForEdit.startDatum.split(' ');
+      const datum = splittedDate[0];
+      const startZeit = splittedDate[1];
       this.taksForm.reset({
-        datum: this.taskForEdit.datum,
+        datum: datum,
         beschreibung: this.taskForEdit.beschreibung,
         dauer: this.taskForEdit.dauer,
-        startZeit: this.taskForEdit.startZeit,
+        startZeit: startZeit,
       });
     }
   }
@@ -88,12 +91,18 @@ export class TasksCreateComponent implements OnInit, OnChanges {
   }
 }
 
-function mergeForm(task: any): AmtPosten {
+function mergeForm(task: TaskFormValues): AmtPosten {
   return {
     id: '',
-    datum: task.datum,
+    startDatum: `${task.datum} ${task.startZeit}`,
     beschreibung: task.beschreibung,
-    dauer: task.dauer,
-    startZeit: task.startZeit,
+    dauer: !!task.dauer ? task.dauer : 0,
   };
+}
+
+interface TaskFormValues {
+  datum: string | Date;
+  beschreibung: string;
+  dauer: number;
+  startZeit: string;
 }

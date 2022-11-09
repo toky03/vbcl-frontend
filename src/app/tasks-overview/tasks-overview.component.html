@@ -5,11 +5,11 @@
         <th
           class="sortable"
           scope="col"
-          (click)="updateOptions('datum', readOptions)"
+          (click)="updateOptions('startDatum', readOptions)"
         >
           <small>Datum</small>
           <i
-            *ngIf="readOptions.sortColumn === 'datum'"
+            *ngIf="readOptions.sortColumn === 'startDatum'"
             [ngClass]="calculateArrow(readOptions.sorting)"
           ></i>
         </th>
@@ -43,10 +43,10 @@
     <tbody>
       <tr *ngFor="let task of tasks$ | async; index as i">
         <td>
-          <small>{{ task.datum | vbcDate }} {{ task.startZeit }}</small>
+          <small>{{ task.startDatum | vbcDate }}</small>
         </td>
         <td>
-          <small>{{ task.dauer }}</small>
+          <small>{{ task.dauer }} h</small>
         </td>
         <td>
           <small>{{ task.beschreibung }}</small>

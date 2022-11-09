@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { format, parseISO } from 'date-fns';
 import { prettyFormat } from 'src/app/utils/date-utils';
 
 @Pipe({

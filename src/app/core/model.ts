@@ -1,9 +1,8 @@
 export interface AmtPosten {
   bestaetigt?: boolean;
   id: string;
-  datum: string;
-  dauer: string;
-  startZeit: string;
+  startDatum: string;
+  dauer: number;
   beschreibung: string;
   reservation?: User;
 }
@@ -15,5 +14,5 @@ export interface User {
 
 export interface ReadOptions {
   sorting: 'ASC' | 'DESC';
-  sortColumn: 'datum' | 'dauer' | 'beschreibung';
+  sortColumn: 'startDatum' | 'dauer' | 'beschreibung';
 }

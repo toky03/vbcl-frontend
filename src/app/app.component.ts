@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { AuthService } from './core/auth.service';
 import { AmtPosten } from './core/model';
 import { IntegrationService } from './integration.service';
+import { LoadingCounterService } from './loading/loading-counter.service';
 
 @Component({
   selector: 'app-root',
@@ -17,12 +18,14 @@ export class AppComponent implements OnInit {
   userName$: Observable<string | undefined> | undefined;
   allowedCreate: boolean = false;
   allowedDownload: boolean = false;
+  isLoading$: Observable<boolean> | undefined;
 
   taskForEdit: AmtPosten | undefined;
 
   constructor(
     private authService: AuthService,
-    private integration: IntegrationService
+    private integration: IntegrationService,
+    private loadingCounterService: LoadingCounterService
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +34,7 @@ export class AppComponent implements OnInit {
     this.userName$ = this.authService.userName;
     this.allowedCreate = this.authService.roles().includes('tkAdmin');
     this.allowedDownload = this.authService.roles().includes('vorstand');
+    this.isLoading$ = this.loadingCounterService.isLoading();
   }
 
   logout(): void {

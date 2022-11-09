@@ -5,11 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CoreModule } from './core/core.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 import { TasksOverviewComponent } from './tasks-overview/tasks-overview.component';
 import { TasksCreateComponent } from './tasks-create/tasks-create.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoadingInterceptorService } from './loading/loading-interceptor.service';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -46,6 +47,11 @@ function initializeKeycloak(keycloak: KeycloakService) {
       useFactory: initializeKeycloak,
       multi: true,
       deps: [KeycloakService],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingInterceptorService,
+      multi: true,
     },
   ],
   bootstrap: [AppComponent],

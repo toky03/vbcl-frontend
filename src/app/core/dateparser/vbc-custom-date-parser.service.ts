@@ -8,7 +8,6 @@ export class VbcCustomDateParserService extends NgbDateParserFormatter {
 
   parse(value: string): NgbDateStruct | null {
     if (value) {
-      console.log('date parser', value)
       const date = value.split(this.DELIMITER);
       return {
         day: parseInt(date[0], 10),

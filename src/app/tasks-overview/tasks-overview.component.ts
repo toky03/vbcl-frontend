@@ -17,6 +17,7 @@ export class TasksOverviewComponent implements OnInit {
   readOptions$: Observable<ReadOptions> | undefined;
   roles: string[] | undefined;
   confirmAllowed: boolean = false;
+  loading = false;
 
   constructor(
     private integration: IntegrationService,
@@ -31,7 +32,10 @@ export class TasksOverviewComponent implements OnInit {
   }
 
   reservieren(taskId: string) {
-    this.integration.reservate(taskId).subscribe(() => {});
+    this.loading = true;
+    this.integration.reservate(taskId).subscribe(() => {
+      this.loading = false;
+    });
   }
 
   bestaetigen(taskId: string) {
@@ -59,7 +63,7 @@ export class TasksOverviewComponent implements OnInit {
   }
 
   updateOptions(
-    sortColumn: 'datum' | 'dauer' | 'beschreibung',
+    sortColumn: 'startDatum' | 'dauer' | 'beschreibung',
     currentReadOptions: ReadOptions
   ) {
     let sorting: 'ASC' | 'DESC' = 'ASC';

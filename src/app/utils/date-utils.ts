@@ -6,7 +6,7 @@ export function ensureFmt(input: number): string {
 }
 
 export function prettyFormat(inputDate: string): string {
-  return format(parseISO(inputDate), 'dd.MM.yyyy');
+  return format(parseISO(inputDate), 'dd.MM.yyyy HH:mm');
 }
 
 export function toDateStruct(isoDate: string): NgbDateStruct {

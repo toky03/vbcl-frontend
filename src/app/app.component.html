@@ -13,6 +13,10 @@
       Datei Herunterladen <i class="bi bi-filetype-csv"></i>
     </button>
   </div>
+  <app-toast></app-toast>
+  <div class="spinner-wrapper" *ngIf="isLoading$ | async">
+    <div class="spinner-border" role="status"></div>
+  </div>
 
   <app-tasks-create
     *ngIf="allowedCreate"
