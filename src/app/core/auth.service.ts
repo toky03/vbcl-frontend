@@ -1,19 +1,23 @@
 import { Injectable } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
-import { BehaviorSubject, from, map, Observable, of } from 'rxjs';
+import { KeycloakProfile } from 'keycloak-js';
+import { BehaviorSubject, from, map, Observable, of, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  
+  login() {
+    this.keyCloakService.login();
+  }
+
   roles(): string[] {
     return this.keyCloakService.getUserRoles();
   }
   constructor(private keyCloakService: KeycloakService) {}
 
   get userName(): Observable<string | undefined> {
-    return from(this.keyCloakService.loadUserProfile()).pipe(
+    return this.loadUserProfile().pipe(
       map((profile) => {
         return profile.username;
       })
@@ -21,7 +25,7 @@ export class AuthService {
   }
 
   get givenName(): Observable<string | undefined> {
-    return from(this.keyCloakService.loadUserProfile()).pipe(
+    return this.loadUserProfile().pipe(
       map((profile) => {
         return profile.firstName;
       })
@@ -33,6 +37,17 @@ export class AuthService {
   }
 
   isAuthenticated(): Observable<boolean> {
-    return of(false);
+    return from(this.keyCloakService.isLoggedIn());
+  }
+
+  private loadUserProfile(): Observable<KeycloakProfile> {
+    return this.isAuthenticated().pipe(
+      switchMap((authenticated: boolean) => {
+        if (authenticated) {
+          return from(this.keyCloakService.loadUserProfile());
+        }
+        return of({});
+      })
+    );
   }
 }

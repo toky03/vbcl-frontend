@@ -21,10 +21,10 @@ function initializeKeycloak(keycloak: KeycloakService) {
         clientId: 'volley-app',
       },
       initOptions: {
-        onLoad: 'login-required',
+        onLoad: 'check-sso',
         checkLoginIframe: false,
         silentCheckSsoRedirectUri:
-          window.location.origin + ':4200/assets/silent-check-sso.html',
+          window.location.origin + '/assets/silent-check-sso.html',
       },
     });
 }

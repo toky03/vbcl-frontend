@@ -5,6 +5,7 @@ import { AuthService } from './core/auth.service';
 import { AmtPosten } from './core/model';
 import { IntegrationService } from './integration.service';
 import { LoadingCounterService } from './loading/loading-counter.service';
+import { createLink } from './utils/fiel-utils';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +42,10 @@ export class AppComponent implements OnInit {
     this.authService.logout();
   }
 
+  login(): void {
+    this.authService.login();
+  }
+
   sendToEdit(task: AmtPosten): void {
     this.taskForEdit = task;
   }
@@ -61,16 +66,4 @@ export class AppComponent implements OnInit {
       createLink(filename, url);
     });
   }
-}
-
-function createLink(filename: string, data: string) {
-  var element = document.createElement('a');
-  element.setAttribute('href', data);
-  element.setAttribute('download', filename);
-  element.style.display = 'none';
-  document.body.appendChild(element);
-
-  element.click();
-
-  document.body.removeChild(element);
 }

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { AmtPosten, ReadOptions } from '../core/model';
 import { IntegrationService } from '../integration.service';
+import { createLink } from '../utils/fiel-utils';
 
 @Component({
   selector: 'app-tasks-overview',
@@ -10,14 +11,13 @@ import { IntegrationService } from '../integration.service';
   styleUrls: ['./tasks-overview.component.css'],
 })
 export class TasksOverviewComponent implements OnInit {
-  @Input() userName: string | undefined;
   @Output() markForEdit: EventEmitter<AmtPosten> = new EventEmitter();
 
   tasks$: Observable<AmtPosten[]> | undefined;
   readOptions$: Observable<ReadOptions> | undefined;
+  userName$: Observable<string | undefined> | undefined;
   roles: string[] | undefined;
   confirmAllowed: boolean = false;
-  loading = false;
 
   constructor(
     private integration: IntegrationService,
@@ -27,15 +27,13 @@ export class TasksOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.tasks$ = this.integration.readTasks();
     this.readOptions$ = this.integration.readSortingOptions();
+    this.userName$ = this.authService.userName;
     this.roles = this.authService.roles();
     this.confirmAllowed = this.roles.includes('tkAdmin');
   }
 
   reservieren(taskId: string) {
-    this.loading = true;
-    this.integration.reservate(taskId).subscribe(() => {
-      this.loading = false;
-    });
+    this.integration.reservate(taskId).subscribe(() => {});
   }
 
   bestaetigen(taskId: string) {
@@ -71,5 +69,16 @@ export class TasksOverviewComponent implements OnInit {
       sorting = currentReadOptions.sorting === 'ASC' ? 'DESC' : 'ASC';
     }
     this.integration.updateSorting({ sortColumn, sorting });
+  }
+
+  downloadCalendar(task: AmtPosten) {
+    this.integration
+      .downloadCalendarEntry(task.id)
+      .subscribe((data: string) => {
+        const blob = new Blob([data], { type: 'text/calendar' });
+        const url = window.URL.createObjectURL(blob);
+        const filename = `${task.beschreibung}.ics`;
+        createLink(filename, url);
+      });
   }
 }

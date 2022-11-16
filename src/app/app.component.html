@@ -2,12 +2,27 @@
   <div class="container justify-content-between">
     <a class="navbar-brand" href="#"> VBC Lyss </a>
 
-    <div class="float-right">Hallo {{ givenName$ | async }}!</div>
+    <div *ngIf="authenticated$ | async" class="float-right">
+      Hallo {{ givenName$ | async }}!
+    </div>
 
-    <button class="btn float-right" (click)="logout()">Ausloggen</button>
+    <button
+      *ngIf="authenticated$ | async"
+      class="btn float-right"
+      (click)="logout()"
+    >
+      Ausloggen
+    </button>
+    <button
+      *ngIf="!(authenticated$ | async)"
+      class="btn float-right"
+      (click)="login()"
+    >
+      Einloggen
+    </button>
   </div>
 </nav>
-<div class="container" *ngIf="userName$ | async as userName">
+<div class="container" >
   <div class="m-3 d-flex" *ngIf="allowedDownload">
     <button class="btn btn-primary ms-auto" (click)="download()">
       Datei Herunterladen <i class="bi bi-filetype-csv"></i>
@@ -25,6 +40,5 @@
   ></app-tasks-create>
   <app-tasks-overview
     (markForEdit)="sendToEdit($event)"
-    [userName]="userName"
   ></app-tasks-overview>
 </div>

@@ -210,13 +210,15 @@ export class IntegrationService {
     );
   }
 
-
   downloadCsv(): Observable<ArrayBuffer> {
     const readOptions = this.readOptions$.value;
-    this.loadingSubject$.next(true);
     return this.httpClient.get(BASE_URL + '/export', {
       params: { ...readOptions },
       responseType: 'arraybuffer',
     });
+  }
+
+  downloadCalendarEntry(taskId: string): Observable<string> {
+    return this.httpClient.get(`${BASE_URL}/export/calendar/${taskId}`, {responseType: 'text'});
   }
 }

@@ -35,15 +35,24 @@
             [ngClass]="calculateArrow(readOptions.sorting)"
           ></i>
         </th>
-        <th scope="col"><small>Reservierung</small></th>
+        <th scope="col" *ngIf="userName$ | async as userName">
+          <small>Reservierung</small>
+        </th>
         <th *ngIf="confirmAllowed" scope="col"><small>Bestätigen</small></th>
         <th *ngIf="confirmAllowed" scope="col"><small>Aktionen</small></th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let task of tasks$ | async; index as i">
+      <tr *ngFor="let task of tasks$ | async">
         <td>
           <small>{{ task.startDatum | vbcDate }}</small>
+          <div *ngIf="userName$ | async as userName">
+            <button
+              class="btn btn-sm calendar-button"
+              *ngIf="task.reservation?.id === userName"
+              (click)="downloadCalendar(task)"
+            ></button>
+          </div>
         </td>
         <td>
           <small>{{ task.dauer }} h</small>
@@ -51,7 +60,7 @@
         <td>
           <small>{{ task.beschreibung }}</small>
         </td>
-        <td>
+        <td *ngIf="userName$ | async as userName">
           <button
             *ngIf="!task.reservation?.id; else reservierung"
             class="btn btn-secondary btn-sm"
