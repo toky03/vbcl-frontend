@@ -24,7 +24,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
         onLoad: 'check-sso',
         checkLoginIframe: false,
         silentCheckSsoRedirectUri:
-          window.location.origin + '/assets/silent-check-sso.html',
+          window.location.href + '/assets/silent-check-sso.html',
       },
     });
 }
