@@ -61,7 +61,7 @@ export class TasksOverviewComponent implements OnInit {
   }
 
   updateOptions(
-    sortColumn: 'startDatum' | 'dauer' | 'beschreibung',
+    sortColumn: 'startDatum' | 'dauer' | 'beschreibung' | 'eventName',
     currentReadOptions: ReadOptions
   ) {
     let sorting: 'ASC' | 'DESC' = 'ASC';

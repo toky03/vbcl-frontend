@@ -5,6 +5,7 @@ export interface AmtPosten {
   dauer: number;
   beschreibung: string;
   reservation?: User;
+  eventName: string;
 }
 
 export interface User {
@@ -14,5 +15,5 @@ export interface User {
 
 export interface ReadOptions {
   sorting: 'ASC' | 'DESC';
-  sortColumn: 'startDatum' | 'dauer' | 'beschreibung';
+  sortColumn: 'startDatum' | 'dauer' | 'beschreibung' | 'eventName';
 }
