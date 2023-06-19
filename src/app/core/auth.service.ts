@@ -19,7 +19,7 @@ export class AuthService {
   get userName(): Observable<string | undefined> {
     return this.loadUserProfile().pipe(
       map((profile) => {
-        return profile.username;
+        return profile.email;
       })
     );
   }
