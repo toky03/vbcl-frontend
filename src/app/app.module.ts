@@ -11,6 +11,7 @@ import { TasksOverviewComponent } from './tasks-overview/tasks-overview.componen
 import { TasksCreateComponent } from './tasks-create/tasks-create.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoadingInterceptorService } from './loading/loading-interceptor.service';
+import { EventsOverviewComponent } from './events-overview/events-overview.component';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -30,7 +31,7 @@ function initializeKeycloak(keycloak: KeycloakService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, TasksOverviewComponent, TasksCreateComponent],
+  declarations: [AppComponent, TasksOverviewComponent, TasksCreateComponent, EventsOverviewComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

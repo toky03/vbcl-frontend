@@ -5,17 +5,6 @@
         <th
           class="sortable"
           scope="col"
-          (click)="updateOptions('eventName', readOptions)"
-        >
-          <small>Event</small>
-          <i
-            *ngIf="readOptions.sortColumn === 'eventName'"
-            [ngClass]="calculateArrow(readOptions.sorting)"
-          ></i>
-        </th>
-        <th
-          class="sortable"
-          scope="col"
           (click)="updateOptions('startDatum', readOptions)"
         >
           <small>Datum</small>
@@ -56,9 +45,6 @@
     <tbody>
       <tr *ngFor="let task of tasks$ | async">
         <td>
-          <small>{{ task.eventName }}</small>
-        </td>
-        <td>
           <small>{{ task.startDatum | vbcDate }}</small>
           <div *ngIf="userName$ | async as userName">
             <button
@@ -69,7 +55,7 @@
           </div>
         </td>
         <td>
-          <small>{{ task.dauer? task.dauer: 0 }} h</small>
+          <small>{{ task.dauer ? task.dauer : 0 }} h</small>
         </td>
         <td>
           <small>{{ task.beschreibung }}</small>

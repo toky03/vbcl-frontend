@@ -1,0 +1,7 @@
+<div class="container p2" *ngFor="let eventName of eventNames$ | async">
+  <h3>{{ eventName }}</h3>
+  <app-tasks-overview
+    [eventName]="eventName"
+    (markForEdit)="edit($event)"
+  ></app-tasks-overview>
+</div>

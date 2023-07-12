@@ -54,6 +54,25 @@
         ></ngb-timepicker>
       </div>
     </div>
+    <div *ngIf="taskForEdit" class="container d-flex justify-content-center">
+      <div class="p-2 input-group">
+        <input
+          class="p-2 form-control"
+          type="text"
+          formControlName="nameReservation"
+          placeholder="Name"
+          required
+        />
+      </div>
+      <div class="input-group p-2">
+        <input
+          class="form-control"
+          type="text"
+          formControlName="idReservation"
+          placeholder="Email Reservation"
+        />
+      </div>
+    </div>
     <button
       *ngIf="taskForEdit"
       class="m-2 float-right btn btn-warning"

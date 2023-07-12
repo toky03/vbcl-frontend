@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -7,26 +8,34 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import {
   NgbDateAdapter,
   NgbDateParserFormatter,
   NgbTimeAdapter,
 } from '@ng-bootstrap/ng-bootstrap';
-import {VbcAdapterService} from '../core/dateparser/vbc-adapter.service';
-import {VbcCustomDateParserService} from '../core/dateparser/vbc-custom-date-parser.service';
-import {AmtPosten} from '../core/model';
-import {VbcTimeAdapterService} from '../core/timeparser/vbc-time-adapter.service';
-import {IntegrationService} from '../integration.service';
+import { VbcAdapterService } from '../core/dateparser/vbc-adapter.service';
+import { VbcCustomDateParserService } from '../core/dateparser/vbc-custom-date-parser.service';
+import { AmtPosten } from '../core/model';
+import { VbcTimeAdapterService } from '../core/timeparser/vbc-time-adapter.service';
+import { IntegrationService } from '../integration.service';
+import { ta } from 'date-fns/locale';
 
 @Component({
   selector: 'app-tasks-create',
   templateUrl: './tasks-create.component.html',
   styleUrls: ['./tasks-create.component.css'],
   providers: [
-    {provide: NgbDateAdapter, useClass: VbcAdapterService},
-    {provide: NgbDateParserFormatter, useClass: VbcCustomDateParserService},
-    {provide: NgbTimeAdapter, useClass: VbcTimeAdapterService},
+    { provide: NgbDateAdapter, useClass: VbcAdapterService },
+    { provide: NgbDateParserFormatter, useClass: VbcCustomDateParserService },
+    { provide: NgbTimeAdapter, useClass: VbcTimeAdapterService },
   ],
 })
 export class TasksCreateComponent implements OnInit, OnChanges {
@@ -37,9 +46,9 @@ export class TasksCreateComponent implements OnInit, OnChanges {
 
   constructor(
     private formBuilder: FormBuilder,
-    private integrationService: IntegrationService
-  ) {
-  }
+    private integrationService: IntegrationService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.taksForm = this.formBuilder.group({
@@ -48,6 +57,8 @@ export class TasksCreateComponent implements OnInit, OnChanges {
       eventName: ['', Validators.required],
       dauer: [0],
       startZeit: ['', Validators.required],
+      nameReservation: [''],
+      idReservation: [''],
     });
   }
 
@@ -62,6 +73,8 @@ export class TasksCreateComponent implements OnInit, OnChanges {
         beschreibung: this.taskForEdit.beschreibung,
         dauer: this.taskForEdit.dauer,
         startZeit: startZeit,
+        nameReservation: this.taskForEdit.reservation?.name,
+        idReservation: this.taskForEdit.reservation?.id,
       });
     }
   }
@@ -99,6 +112,13 @@ function mergeForm(task: TaskFormValues): AmtPosten {
     eventName: task.eventName,
     beschreibung: task.beschreibung,
     dauer: !!task.dauer ? task.dauer : 0,
+    reservation:
+      !!task.nameReservation && !!task.idReservation
+        ? {
+            id: task.idReservation,
+            name: task.nameReservation,
+          }
+        : undefined,
   };
 }
 
@@ -108,4 +128,6 @@ interface TaskFormValues {
   beschreibung: string;
   dauer: number;
   startZeit: string;
+  nameReservation?: string;
+  idReservation?: string;
 }

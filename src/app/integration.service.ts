@@ -16,43 +16,46 @@ import { ToastService } from './core/toast/toast.service';
 
 const BASE_URL = environment.baseUrl;
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class IntegrationService {
   private initialReadOptions: ReadOptions = {
     sortColumn: 'startDatum',
     sorting: 'ASC',
   };
-  private loadingSubject$: Subject<boolean> = new BehaviorSubject(false);
-  private triggerReadSubject$: Subject<string> = new BehaviorSubject('');
+
+  private triggerReadSubject$: Subject<string> = new Subject();
+
   private readOptions$: BehaviorSubject<ReadOptions> = new BehaviorSubject(
     this.initialReadOptions
   );
-  private tasksRead$: Observable<AmtPosten[]>;
+
+  private tasksRead: { [eventName: string]: Subject<AmtPosten[]> } = {};
 
   constructor(
     private httpClient: HttpClient,
     private toastService: ToastService
   ) {
-    this.tasksRead$ = combineLatest([
-      this.triggerReadSubject$,
-      this.readOptions$,
-    ]).pipe(
-      switchMap(([x, readOptions]: [string, ReadOptions]) =>
-        this.httpClient.get<AmtPosten[]>(BASE_URL + '/tasks', {
-          params: { ...readOptions },
+    this.triggerReadSubject$.subscribe((eventName: string) => {
+      this.httpClient
+        .get<AmtPosten[]>(BASE_URL + '/tasks/' + eventName, {
+          params: { ...this.readOptions$.value },
         })
-      )
-    );
+        .subscribe((tasks) => {
+          this.tasksRead[eventName].next(tasks);
+        });
+    });
   }
 
   private executeRead(): void {
-    this.triggerReadSubject$.next('');
+    const eventNames: string[] = Object.keys(this.tasksRead);
+    eventNames.forEach((eventName: string) => {
+      this.triggerReadSubject$.next(eventName);
+    });
   }
 
   updateSorting(readOptions: ReadOptions): void {
     this.readOptions$.next(readOptions);
+    this.executeRead();
   }
 
   readSortingOptions(): Observable<ReadOptions> {
@@ -78,8 +81,12 @@ export class IntegrationService {
     );
   }
 
-  readTasks(): Observable<AmtPosten[]> {
-    return this.tasksRead$;
+  readTasks(eventName: string): Observable<AmtPosten[]> {
+    if (!this.tasksRead[eventName]) {
+      this.tasksRead[eventName] = new Subject();
+    }
+    this.triggerReadSubject$.next(eventName);
+    return this.tasksRead[eventName];
   }
 
   reservate(taskId: string): Observable<void> {
@@ -219,6 +226,8 @@ export class IntegrationService {
   }
 
   downloadCalendarEntry(taskId: string): Observable<string> {
-    return this.httpClient.get(`${BASE_URL}/export/calendar/${taskId}`, {responseType: 'text'});
+    return this.httpClient.get(`${BASE_URL}/export/calendar/${taskId}`, {
+      responseType: 'text',
+    });
   }
 }

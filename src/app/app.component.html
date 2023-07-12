@@ -22,7 +22,7 @@
     </button>
   </div>
 </nav>
-<div class="container" >
+<div class="container">
   <div class="m-3 d-flex" *ngIf="allowedDownload">
     <button class="btn btn-primary ms-auto" (click)="download()">
       Datei Herunterladen <i class="bi bi-filetype-csv"></i>
@@ -38,7 +38,7 @@
     [taskForEdit]="taskForEdit"
     (taskEdited)="taskEdited()"
   ></app-tasks-create>
-  <app-tasks-overview
-    (markForEdit)="sendToEdit($event)"
-  ></app-tasks-overview>
+
+  <app-events-overview (markForEdit)="sendToEdit($event)">
+  </app-events-overview>
 </div>

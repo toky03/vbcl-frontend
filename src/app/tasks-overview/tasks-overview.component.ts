@@ -1,5 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { AuthService } from '../core/auth.service';
 import { AmtPosten, ReadOptions } from '../core/model';
 import { IntegrationService } from '../integration.service';
@@ -10,10 +18,11 @@ import { createLink } from '../utils/fiel-utils';
   templateUrl: './tasks-overview.component.html',
   styleUrls: ['./tasks-overview.component.css'],
 })
-export class TasksOverviewComponent implements OnInit {
+export class TasksOverviewComponent implements OnInit, OnChanges {
   @Output() markForEdit: EventEmitter<AmtPosten> = new EventEmitter();
+  @Input() eventName: string | undefined;
 
-  tasks$: Observable<AmtPosten[]> | undefined;
+  tasks$: Subject<AmtPosten[]> = new Subject();
   readOptions$: Observable<ReadOptions> | undefined;
   userName$: Observable<string | undefined> | undefined;
   roles: string[] | undefined;
@@ -24,8 +33,17 @@ export class TasksOverviewComponent implements OnInit {
     private authService: AuthService
   ) {}
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['eventName'] && this.eventName) {
+      this.integration
+        .readTasks(this.eventName)
+        .subscribe((tasks: AmtPosten[]) => {
+          this.tasks$.next(tasks);
+        });
+    }
+  }
+
   ngOnInit(): void {
-    this.tasks$ = this.integration.readTasks();
     this.readOptions$ = this.integration.readSortingOptions();
     this.userName$ = this.authService.userName;
     this.roles = this.authService.roles();
