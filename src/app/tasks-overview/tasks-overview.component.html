@@ -1,117 +1,142 @@
 <div class="table-responsive">
   <table class="table table-sm table-striped">
-    <thead class="header" *ngIf="readOptions$ | async as readOptions">
-      <tr>
-        <th
-          class="sortable"
-          scope="col"
-          (click)="updateOptions('startDatum', readOptions)"
-        >
-          <small>Datum</small>
-          <i
-            *ngIf="readOptions.sortColumn === 'startDatum'"
-            [ngClass]="calculateArrow(readOptions.sorting)"
-          ></i>
-        </th>
-        <th
-          class="sortable"
-          scope="col"
-          (click)="updateOptions('dauer', readOptions)"
-        >
-          <small>Dauer</small>
-          <i
-            *ngIf="readOptions.sortColumn === 'dauer'"
-            [ngClass]="calculateArrow(readOptions.sorting)"
-          ></i>
-        </th>
-        <th
-          class="sortable"
-          scope="col"
-          (click)="updateOptions('beschreibung', readOptions)"
-        >
-          <small>Beschreibung</small>
-          <i
-            *ngIf="readOptions.sortColumn === 'beschreibung'"
-            [ngClass]="calculateArrow(readOptions.sorting)"
-          ></i>
-        </th>
-        <th scope="col" *ngIf="userName$ | async as userName">
-          <small>Reservierung</small>
-        </th>
-        <th *ngIf="confirmAllowed" scope="col"><small>Bestätigen</small></th>
-        <th *ngIf="confirmAllowed" scope="col"><small>Aktionen</small></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let task of tasks$ | async">
-        <td>
-          <small>{{ task.startDatum | vbcDate }}</small>
-          <div *ngIf="userName$ | async as userName">
-            <button
-              class="btn btn-sm calendar-button"
-              *ngIf="task.reservation?.id === userName"
-              (click)="downloadCalendar(task)"
-            ></button>
-          </div>
-        </td>
-        <td>
-          <small>{{ task.dauer ? task.dauer : 0 }} h</small>
-        </td>
-        <td>
-          <small>{{ task.beschreibung }}</small>
-        </td>
-        <td *ngIf="userName$ | async as userName">
-          <button
-            *ngIf="!task.reservation?.id; else reservierung"
-            class="btn btn-secondary btn-sm"
-            (click)="reservieren(task.id)"
-          >
-            <small>Reservieren</small>
-          </button>
-          <ng-template #reservierung>
-            <p>{{ task.reservation?.name }}</p>
-            <button
-              *ngIf="task.reservation?.id === userName && !task.bestaetigt"
-              class="btn btn-warning"
-              (click)="entferneReservation(task.id)"
+    @if (readOptions$ | async; as readOptions) {
+      <thead class="header">
+        <tr>
+          <th
+            class="sortable"
+            scope="col"
+            (click)="updateOptions('startDatum', readOptions)"
             >
-              <small>Reservation entfernen</small>
-            </button>
-          </ng-template>
-        </td>
-        <td *ngIf="confirmAllowed">
-          <button
-            *ngIf="!task.bestaetigt && task.reservation?.id"
-            class="btn btn-warning btn-sm"
-            (click)="bestaetigen(task.id)"
-          >
-            <i class="bi bi-check"></i>
-          </button>
-          <button
-            *ngIf="task.bestaetigt"
-            class="btn btn-success btn-sm"
-            (click)="entferneBestaetigung(task.id)"
-          >
-            <i class="bi bi-arrow-counterclockwise"></i>
-          </button>
-        </td>
-        <td *ngIf="confirmAllowed">
-          <button
-            type="button"
-            class="btn btn-primary btn-sm"
-            (click)="edit(task)"
-          >
-            <i class="bi bi-pencil-square"></i>
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger btn-sm"
-            (click)="delete(task.id)"
-          >
-            <i class="bi bi-trash"></i>
-          </button>
-        </td>
-      </tr>
+            <small>Datum</small>
+            @if (readOptions.sortColumn === 'startDatum') {
+              <i
+                [ngClass]="calculateArrow(readOptions.sorting)"
+              ></i>
+            }
+          </th>
+          <th
+            class="sortable"
+            scope="col"
+            (click)="updateOptions('dauer', readOptions)"
+            >
+            <small>Dauer</small>
+            @if (readOptions.sortColumn === 'dauer') {
+              <i
+                [ngClass]="calculateArrow(readOptions.sorting)"
+              ></i>
+            }
+          </th>
+          <th
+            class="sortable"
+            scope="col"
+            (click)="updateOptions('beschreibung', readOptions)"
+            >
+            <small>Beschreibung</small>
+            @if (readOptions.sortColumn === 'beschreibung') {
+              <i
+                [ngClass]="calculateArrow(readOptions.sorting)"
+              ></i>
+            }
+          </th>
+          @if (userName$ | async; as userName) {
+            <th scope="col">
+              <small>Reservierung</small>
+            </th>
+          }
+          @if (confirmAllowed) {
+            <th scope="col"><small>Bestätigen</small></th>
+          }
+          @if (confirmAllowed) {
+            <th scope="col"><small>Aktionen</small></th>
+          }
+        </tr>
+      </thead>
+    }
+    <tbody>
+      @for (task of tasks$ | async; track task) {
+        <tr>
+          <td>
+            <small>{{ task.startDatum | vbcDate }}</small>
+            @if (userName$ | async; as userName) {
+              <div>
+                @if (task.reservation?.id === userName) {
+                  <button
+                    class="btn btn-sm calendar-button"
+                    (click)="downloadCalendar(task)"
+                  ></button>
+                }
+              </div>
+            }
+          </td>
+          <td>
+            <small>{{ task.dauer ? task.dauer : 0 }} h</small>
+          </td>
+          <td>
+            <small>{{ task.beschreibung }}</small>
+          </td>
+          @if (userName$ | async; as userName) {
+            <td>
+              @if (!task.reservation?.id) {
+                <button
+                  class="btn btn-secondary btn-sm"
+                  (click)="reservieren(task.id)"
+                  >
+                  <small>Reservieren</small>
+                </button>
+              } @else {
+                <p>{{ task.reservation?.name }}</p>
+                @if (task.reservation?.id === userName && !task.bestaetigt) {
+                  <button
+                    class="btn btn-warning"
+                    (click)="entferneReservation(task.id)"
+                    >
+                    <small>Reservation entfernen</small>
+                  </button>
+                }
+              }
+            </td>
+          }
+          @if (confirmAllowed) {
+            <td>
+              @if (!task.bestaetigt && task.reservation?.id) {
+                <button
+                  class="btn btn-warning btn-sm"
+                  (click)="bestaetigen(task.id)"
+                  >
+                  <i class="bi bi-check"></i>
+                </button>
+              }
+              @if (task.bestaetigt) {
+                <button
+                  class="btn btn-success btn-sm"
+                  (click)="entferneBestaetigung(task.id)"
+                  >
+                  <i class="bi bi-arrow-counterclockwise"></i>
+                </button>
+              }
+            </td>
+          }
+          @if (confirmAllowed) {
+            <td>
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                (click)="edit(task)"
+                >
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="delete(task.id)"
+                >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          }
+        </tr>
+      }
     </tbody>
   </table>
 </div>

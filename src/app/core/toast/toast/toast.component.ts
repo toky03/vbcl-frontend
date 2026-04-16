@@ -3,12 +3,13 @@ import { Observable } from 'rxjs';
 import { Toast, ToastService } from '../toast.service';
 
 @Component({
-  selector: 'app-toast',
-  templateUrl: './toast.component.html',
-  styleUrls: ['./toast.component.css'],
-  host: {
-    class: 'toast-container position-fixed top-0 end-0 p-3',
-  },
+    selector: 'app-toast',
+    templateUrl: './toast.component.html',
+    styleUrls: ['./toast.component.css'],
+    host: {
+        class: 'toast-container position-fixed top-0 end-0 p-3',
+    },
+    standalone: false
 })
 export class ToastComponent implements OnInit, OnDestroy {
   toasts$: Observable<Toast[]> | undefined;

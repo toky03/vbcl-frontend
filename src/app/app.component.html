@@ -2,42 +2,51 @@
   <div class="container justify-content-between">
     <a class="navbar-brand" href="#"> VBC Lyss </a>
 
-    <div *ngIf="authenticated$ | async" class="float-right">
-      Hallo {{ givenName$ | async }}!
-    </div>
+    @if (authenticated$ | async) {
+      <div class="float-right">
+        Hallo {{ givenName$ | async }}!
+      </div>
+    }
 
-    <button
-      *ngIf="authenticated$ | async"
-      class="btn float-right"
-      (click)="logout()"
-    >
-      Ausloggen
-    </button>
-    <button
-      *ngIf="!(authenticated$ | async)"
-      class="btn float-right"
-      (click)="login()"
-    >
-      Einloggen
-    </button>
+    @if (authenticated$ | async) {
+      <button
+        class="btn float-right"
+        (click)="logout()"
+        >
+        Ausloggen
+      </button>
+    }
+    @if (!(authenticated$ | async)) {
+      <button
+        class="btn float-right"
+        (click)="login()"
+        >
+        Einloggen
+      </button>
+    }
   </div>
 </nav>
 <div class="container">
-  <div class="m-3 d-flex" *ngIf="allowedDownload">
-    <button class="btn btn-primary ms-auto" (click)="download()">
-      Datei Herunterladen <i class="bi bi-filetype-csv"></i>
-    </button>
-  </div>
+  @if (allowedDownload) {
+    <div class="m-3 d-flex">
+      <button class="btn btn-primary ms-auto" (click)="download()">
+        Datei Herunterladen <i class="bi bi-filetype-csv"></i>
+      </button>
+    </div>
+  }
   <app-toast></app-toast>
-  <div class="spinner-wrapper" *ngIf="isLoading$ | async">
-    <div class="spinner-border" role="status"></div>
-  </div>
+  @if (isLoading$ | async) {
+    <div class="spinner-wrapper">
+      <div class="spinner-border" role="status"></div>
+    </div>
+  }
 
-  <app-tasks-create
-    *ngIf="allowedCreate"
-    [taskForEdit]="taskForEdit"
-    (taskEdited)="taskEdited()"
-  ></app-tasks-create>
+  @if (allowedCreate) {
+    <app-tasks-create
+      [taskForEdit]="taskForEdit"
+      (taskEdited)="taskEdited()"
+    ></app-tasks-create>
+  }
 
   <app-events-overview (markForEdit)="sendToEdit($event)">
   </app-events-overview>

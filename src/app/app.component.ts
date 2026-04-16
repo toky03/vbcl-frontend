@@ -8,9 +8,10 @@ import { LoadingCounterService } from './loading/loading-counter.service';
 import { createLink } from './utils/fiel-utils';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   authenticated$: Observable<boolean> = of(false);

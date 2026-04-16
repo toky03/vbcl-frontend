@@ -14,9 +14,10 @@ import { IntegrationService } from '../integration.service';
 import { createLink } from '../utils/fiel-utils';
 
 @Component({
-  selector: 'app-tasks-overview',
-  templateUrl: './tasks-overview.component.html',
-  styleUrls: ['./tasks-overview.component.css'],
+    selector: 'app-tasks-overview',
+    templateUrl: './tasks-overview.component.html',
+    styleUrls: ['./tasks-overview.component.css'],
+    standalone: false
 })
 export class TasksOverviewComponent implements OnInit, OnChanges {
   @Output() markForEdit: EventEmitter<AmtPosten> = new EventEmitter();
@@ -86,7 +87,11 @@ export class TasksOverviewComponent implements OnInit, OnChanges {
     if (sortColumn === currentReadOptions.sortColumn) {
       sorting = currentReadOptions.sorting === 'ASC' ? 'DESC' : 'ASC';
     }
-    this.integration.updateSorting({ sortColumn, sorting });
+    this.integration.updateSorting({
+      ...currentReadOptions,
+      sortColumn,
+      sorting,
+    });
   }
 
   downloadCalendar(task: AmtPosten) {

@@ -1,91 +1,96 @@
-<div class="mt-3 card" *ngIf="taksForm">
-  <form [formGroup]="taksForm">
-    <div class="container p-4 d-flex justify-content-between">
-      <div class="p2 input-group">
+@if (taksForm) {
+  <div class="mt-3 card">
+    <form [formGroup]="taksForm">
+      <div class="container p-4 d-flex justify-content-between">
+        <div class="p2 input-group">
+          <div class="input-group p-2">
+            <input
+              class="form-control"
+              type="text"
+              formControlName="eventName"
+              placeholder="Event Name"
+              />
+          </div>
+        </div>
+        <div class="p-2 input-group">
+          <input
+            class="form-control"
+            placeholder="dd.mm.yyyy"
+            name="dp"
+            formControlName="datum"
+            ngbDatepicker
+            #d="ngbDatepicker"
+            />
+          <button
+            class="btn btn-outline-secondary calendar"
+            (click)="d.toggle()"
+            type="button"
+          ></button>
+        </div>
+        <div class="p-2 input-group">
+          <input
+            class="p-2 form-control"
+            type="text"
+            formControlName="beschreibung"
+            placeholder="Beschreibung"
+            required
+            />
+        </div>
         <div class="input-group p-2">
           <input
             class="form-control"
-            type="text"
-            formControlName="eventName"
-            placeholder="Event Name"
-          />
+            type="number"
+            formControlName="dauer"
+            placeholder="Dauer in Stunden"
+            />
         </div>
       </div>
-      <div class="p-2 input-group">
-        <input
-          class="form-control"
-          placeholder="dd.mm.yyyy"
-          name="dp"
-          formControlName="datum"
-          ngbDatepicker
-          #d="ngbDatepicker"
-        />
+      <div class="container d-flex justify-content-center">
+        <div class="input-group justify-content-center">
+          <div class="small form-text">Start Zeit</div>
+          <ngb-timepicker
+            size="small"
+            placeholder="HH:mm"
+            formControlName="startZeit"
+          ></ngb-timepicker>
+        </div>
+      </div>
+      @if (taskForEdit) {
+        <div class="container d-flex justify-content-center">
+          <div class="p-2 input-group">
+            <input
+              class="p-2 form-control"
+              type="text"
+              formControlName="nameReservation"
+              placeholder="Name"
+              />
+          </div>
+          <div class="input-group p-2">
+            <input
+              class="form-control"
+              type="text"
+              formControlName="idReservation"
+              placeholder="Email Reservation"
+              />
+          </div>
+        </div>
+      }
+      @if (taskForEdit) {
         <button
-          class="btn btn-outline-secondary calendar"
-          (click)="d.toggle()"
-          type="button"
-        ></button>
-      </div>
-      <div class="p-2 input-group">
-        <input
-          class="p-2 form-control"
-          type="text"
-          formControlName="beschreibung"
-          placeholder="Beschreibung"
-          required
-        />
-      </div>
-      <div class="input-group p-2">
-        <input
-          class="form-control"
-          type="number"
-          formControlName="dauer"
-          placeholder="Dauer in Stunden"
-        />
-      </div>
-    </div>
-    <div class="container d-flex justify-content-center">
-      <div class="input-group justify-content-center">
-        <div class="small form-text">Start Zeit</div>
-        <ngb-timepicker
-          size="small"
-          placeholder="HH:mm"
-          formControlName="startZeit"
-        ></ngb-timepicker>
-      </div>
-    </div>
-    <div *ngIf="taskForEdit" class="container d-flex justify-content-center">
-      <div class="p-2 input-group">
-        <input
-          class="p-2 form-control"
-          type="text"
-          formControlName="nameReservation"
-          placeholder="Name"
-        />
-      </div>
-      <div class="input-group p-2">
-        <input
-          class="form-control"
-          type="text"
-          formControlName="idReservation"
-          placeholder="Email Reservation"
-        />
-      </div>
-    </div>
-    <button
-      *ngIf="taskForEdit"
-      class="m-2 float-right btn btn-warning"
-      (click)="cancel()"
-    >
-      Abbrechen
-    </button>
-    <button
-      type="submit"
-      class="m-2 float-right btn btn-success"
-      [disabled]="!taksForm.valid"
-      (click)="save()"
-    >
-      {{ taskForEdit ? "Speichern" : "Aufgabe erfassen" }}
-    </button>
-  </form>
-</div>
+          class="m-2 float-right btn btn-warning"
+          (click)="cancel()"
+          >
+          Abbrechen
+        </button>
+      }
+      <button
+        type="submit"
+        class="m-2 float-right btn btn-success"
+        [disabled]="!taksForm.valid"
+        (click)="save()"
+        >
+        {{ taskForEdit ? "Speichern" : "Aufgabe erfassen" }}
+      </button>
+    </form>
+  </div>
+}

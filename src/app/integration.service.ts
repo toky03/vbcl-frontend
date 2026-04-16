@@ -21,6 +21,7 @@ export class IntegrationService {
   private initialReadOptions: ReadOptions = {
     sortColumn: 'startDatum',
     sorting: 'ASC',
+    includeOldEvents: false,
   };
 
   private triggerReadSubject$: Subject<string> = new Subject();
@@ -55,6 +56,14 @@ export class IntegrationService {
 
   updateSorting(readOptions: ReadOptions): void {
     this.readOptions$.next(readOptions);
+    this.executeRead();
+  }
+
+  updateIncludeOldEvents(includeOldEvents: boolean): void {
+    this.readOptions$.next({
+      ...this.readOptions$.value,
+      includeOldEvents,
+    });
     this.executeRead();
   }
 

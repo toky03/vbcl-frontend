@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   isAuthenticated(): Observable<boolean> {
-    return from(this.keyCloakService.isLoggedIn());
+    return of(this.keyCloakService.isLoggedIn());
   }
 
   private loadUserProfile(): Observable<KeycloakProfile> {
