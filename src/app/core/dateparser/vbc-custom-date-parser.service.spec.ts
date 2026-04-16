@@ -6,7 +6,9 @@ describe('VbcCustomDateParserService', () => {
   let service: VbcCustomDateParserService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [VbcCustomDateParserService],
+    });
     service = TestBed.inject(VbcCustomDateParserService);
   });
 

@@ -16,4 +16,5 @@ export interface User {
 export interface ReadOptions {
   sorting: 'ASC' | 'DESC';
   sortColumn: 'startDatum' | 'dauer' | 'beschreibung' | 'eventName';
+  includeOldEvents: boolean;
 }

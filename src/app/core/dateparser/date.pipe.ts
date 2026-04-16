@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { prettyFormat } from 'src/app/utils/date-utils';
 
 @Pipe({
-  name: 'vbcDate'
+    name: 'vbcDate',
+    standalone: false
 })
 export class VbcDatePipe implements PipeTransform {
 

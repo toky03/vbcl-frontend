@@ -29,14 +29,15 @@ import { IntegrationService } from '../integration.service';
 import { ta } from 'date-fns/locale';
 
 @Component({
-  selector: 'app-tasks-create',
-  templateUrl: './tasks-create.component.html',
-  styleUrls: ['./tasks-create.component.css'],
-  providers: [
-    { provide: NgbDateAdapter, useClass: VbcAdapterService },
-    { provide: NgbDateParserFormatter, useClass: VbcCustomDateParserService },
-    { provide: NgbTimeAdapter, useClass: VbcTimeAdapterService },
-  ],
+    selector: 'app-tasks-create',
+    templateUrl: './tasks-create.component.html',
+    styleUrls: ['./tasks-create.component.css'],
+    providers: [
+        { provide: NgbDateAdapter, useClass: VbcAdapterService },
+        { provide: NgbDateParserFormatter, useClass: VbcCustomDateParserService },
+        { provide: NgbTimeAdapter, useClass: VbcTimeAdapterService },
+    ],
+    standalone: false
 })
 export class TasksCreateComponent implements OnInit, OnChanges {
   taksForm: FormGroup | undefined;

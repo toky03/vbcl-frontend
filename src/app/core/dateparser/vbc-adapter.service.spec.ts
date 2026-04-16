@@ -6,7 +6,9 @@ describe('VbcAdapterService', () => {
   let service: VbcAdapterService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [VbcAdapterService],
+    });
     service = TestBed.inject(VbcAdapterService);
   });
 
